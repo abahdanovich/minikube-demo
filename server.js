@@ -1,4 +1,5 @@
 var http = require('http');
+var os = require('os');
 
 const hostname = '0.0.0.0';
 const port = 8080;
@@ -6,7 +7,13 @@ const port = 8080;
 var handleRequest = function(request, response) {
   console.log('Received request for URL: ' + request.url);
   response.writeHead(200);
-  response.end('Hello World!');
+  response.end([
+    'Hello World! :)',
+    'Hostname: ' + os.hostname(),
+    'Headers:',
+    Object.entries(request.headers).map(([k, v]) => `  ${k}: ${v}`).join('\n'),
+    ''
+  ].join('\n'));
 };
 
 var www = http.createServer(handleRequest);
